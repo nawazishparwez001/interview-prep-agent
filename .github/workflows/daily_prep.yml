@@ -1,0 +1,39 @@
+name: Daily Interview Prep
+
+on:
+  schedule:
+    - cron: '0 5 * * *'  # 10:30 AM IST (UTC+5:30) = 05:00 UTC
+  workflow_dispatch:       # allows manual trigger from GitHub UI
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install anthropic \
+                      google-auth \
+                      google-auth-oauthlib \
+                      google-api-python-client \
+                      fpdf2
+
+      - name: Decode Google credentials
+        run: |
+          echo "${{ secrets.GOOGLE_TOKEN_B64 }}" | base64 -d > token.pickle
+          echo "${{ secrets.GOOGLE_CREDENTIALS_B64 }}" | base64 -d > credentials.json
+
+      - name: Run agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: python3 interview_prep_agent.py
