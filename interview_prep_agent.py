@@ -174,7 +174,7 @@ class InterviewPrepAgent:
                 return self.anthropic_client.messages.create(**kwargs)
             except Exception as e:
                 if "rate_limit" in str(e).lower() or "429" in str(e):
-                    wait = 60 * attempt
+                    wait = 90 * attempt
                     print(f"⏳ Rate limit hit. Waiting {wait}s before retry {attempt}/3...")
                     time.sleep(wait)
                 else:
@@ -210,7 +210,7 @@ TASK 1 — Extract from the calendar event:
 - Interview type (e.g. Phone Screen, Behavioral, Case Study, Final Round)
 - Interviewer names and likely roles
 
-TASK 2 — Search Glassdoor, AmbitionBox, and Exponent for real verbatim PM interview questions asked at this company. Find 5-10 actual questions from real interview experience posts — not generic advice.
+TASK 2 — Search Glassdoor, AmbitionBox, and Exponent for real verbatim PM interview questions asked at this company. Find the 5 most recent and relevant questions from real interview experience posts — not generic advice.
 
 Return ONLY a valid JSON object in this exact format:
 {{
