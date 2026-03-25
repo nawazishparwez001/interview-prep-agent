@@ -2,7 +2,7 @@
 
 An AI agent that automatically detects PM interviews on your Google Calendar and emails you a personalised preparation report every morning at 10:30 AM.
 
-Built because researching a company, finding real interview questions, and mapping your experience to the role takes 1–2 hours of manual work before every interview. This does it automatically.
+Built this for my personal use. Researching a company, finding real interview questions, and mapping my experience to the role used to take ~1–2 hours of manual work before every interview. This does it automatically.
 
 ---
 
@@ -47,8 +47,22 @@ Built because researching a company, finding real interview questions, and mappi
 Two conditions must both be true:
 1. The event title or description contains a keyword (`interview`, `screening`, `product`, `call`, `exploratory`, etc.)
 2. At least one attendee is from an external domain (not your own company email), OR the event has no attendees listed
-
 This prevents internal team syncs from being flagged as interviews.
+
+---
+
+## Trade-offs & Constraints Faced
+### Interview Detection
+Could be more accurate with an LLM analysing the event, but that adds an extra API call. Used keyword matching + external attendee check instead — fast, free, and good enough for most cases.
+
+### Hitting Rate Limit 
+The web search call consumes a large number of input tokens, pushing the following report generation call over the per-minute limit.
+1. Added retry logic with increasing wait times (90s, 180s, 270s) before giving up
+2. Limited web search to 3 sources (Glassdoor, AmbitionBox, Exponent) and 5 questions to reduce token usage
+
+### If the interview is rescheduled / A new round for the same company is scheduled
+1. The agent figures out if it has already shared the interview report for the company and doesn't create a new report
+2. It sends a reminder email with the previously generated report on the day of the interview
 
 ---
 
