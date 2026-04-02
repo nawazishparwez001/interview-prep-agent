@@ -2,9 +2,10 @@
 
 An AI agent that automatically detects PM interviews on your Google Calendar and emails you a personalised preparation report every morning at 10:30 AM.
 
-Built this for my personal use. Researching a company, finding real interview questions, and mapping my experience to the role used to take ~1–2 hours of manual work before every interview. This does it automatically.
-
 ---
+
+## The Problem
+Researching a company before an interview is a tedious but mandatory task. It includes checking out the website, knowing its vision, products, journey and searching for sample interview questions. It inclused few hours of manual research for every interview and the majority time doesn't go into preparation, rather looking for resources or if you're using LLMs (ChatGPT, Claude etc.) then prompting takes time. 
 
 ## What it does
 
